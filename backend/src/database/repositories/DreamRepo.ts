@@ -1,5 +1,5 @@
 
-import { response } from 'express';
+import Helper from '../../helpers/Helper';
 import DreamService from '../../services/DreamService';
 import Dream, { DreamType } from '../models/dream';
 //import Promise from 'promise'
@@ -8,19 +8,14 @@ export default class DreamRepo {
 
 
     public static async findLastId(){
-        return await Dream.find({},  async (err, dreams)=>{
-            if(err) console.log(err)
-        }).sort({"id":-1}).limit(1)
+        let lastId=1
+        let lastEl =  await Dream.find().sort({"id":-1}).limit(1)
+        if(lastEl.length>0) lastId = lastEl[0].get('id')+1
+        return lastId
     }
 
     public static async createDream(dreamInfo){
-        var obj = {id:0, title: dreamInfo.title, description: dreamInfo.description, date: dreamInfo.date, type: dreamInfo.type}
-        obj.type = DreamService.getDreamTypeName(obj.type)
-
-        let lastId=1
-        let lastEl = await DreamRepo.findLastId()
-        if(lastEl.length>0) lastId = lastEl[0].get('id')+1
-        obj.id= lastId
+        var obj = {id:await this.findLastId(), title: dreamInfo.title, description: dreamInfo.description, date: dreamInfo.date, type: dreamInfo.type}
         let newDream = new Dream(obj);
 
         return await Dream.collection.insertOne(newDream)
@@ -42,22 +37,12 @@ export default class DreamRepo {
         return await Dream.findOneAndDelete({"id":id})
     }
 
-    public static transforDateRange(dateFrom, dateTo){
-        if(dateFrom=="" || dateFrom==undefined) {
-            if(dateTo=="" || dateTo==undefined) return { $exists: true }
-            else return {"$lt": new Date(dateTo)}
-        }else {
-            if(dateTo=="" || dateTo==undefined) return { "$gte": new Date(dateFrom) }
-            else return { "$gte": new Date(dateFrom), "$lt": new Date(dateTo) }
-        }
-    }
 
-    public static async searchDreams(title, type, dateFrom,dateTo, page){
+    public static async searchDreams(title, type, dateFrom,dateTo){
         if(title=="" || title==undefined) title= { $exists: true }
         if(type=="" || type==undefined) type= { $exists: true }
 
-        let dateComparison:any = this.transforDateRange(dateFrom, dateTo)
-        if(page == undefined || page=="" || isNaN(Number(page))) page=1
+        let dateComparison:any = Helper.transforDateRange(dateFrom, dateTo)
         
         return await Dream.collection.aggregate([
             { "$addFields": {

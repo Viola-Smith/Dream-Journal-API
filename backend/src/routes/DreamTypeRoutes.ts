@@ -1,14 +1,13 @@
 import express from 'express';
+import DreamTypeService from '../services/DreamTypeService';
+import Helper from '../helpers/Helper';
 
 
 const router = express.Router();
 
-import DreamService from '../services/DreamService'
-
-
 
 router.route('/types').get((req, res)=>{
-	let result =  DreamService.getAllDreamTypes()
+	let result =  DreamTypeService.getAllDreamTypes()
 	res.json(result)
   }
 );

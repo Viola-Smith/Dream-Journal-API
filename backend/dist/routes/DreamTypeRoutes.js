@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const DreamTypeService_1 = __importDefault(require("../services/DreamTypeService"));
 const router = express_1.default.Router();
-const DreamService_1 = __importDefault(require("../services/DreamService"));
 router.route('/types').get((req, res) => {
-    let result = DreamService_1.default.getAllDreamTypes();
+    let result = DreamTypeService_1.default.getAllDreamTypes();
     res.json(result);
 });
 module.exports = router;
