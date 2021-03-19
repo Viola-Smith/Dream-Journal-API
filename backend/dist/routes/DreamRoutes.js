@@ -22,10 +22,18 @@ router.route('/').post((req, res) => __awaiter(void 0, void 0, void 0, function*
 router.route('/').get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json(yield DreamService_1.default.getAllDreams());
 }));
+router.route('/:id').get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let id = req.params.id;
+    res.json(yield DreamService_1.default.findDream(Number(id)));
+}));
 router.route('/:id').put((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let id = req.params.id;
     let dream = req.body.dream;
     res.json(yield DreamService_1.default.updateDream(Number(id), dream));
+}));
+router.route('/:id').delete((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let id = req.params.id;
+    res.json(yield DreamService_1.default.deleteDream(Number(id)));
 }));
 module.exports = router;
 //# sourceMappingURL=DreamRoutes.js.map

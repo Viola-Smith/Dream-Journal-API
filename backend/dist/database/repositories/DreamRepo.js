@@ -42,9 +42,19 @@ class DreamRepo {
             return yield dream_1.default.find().exec();
         });
     }
+    static getDream(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield dream_1.default.findOne({ "id": id }).exec();
+        });
+    }
     static updateDream(id, newDream) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield dream_1.default.replaceOne({ "id": id }, newDream);
+            return yield dream_1.default.findOneAndUpdate({ "id": id }, newDream, { new: true }).exec();
+        });
+    }
+    static deleteDream(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield dream_1.default.findOneAndDelete({ "id": id });
         });
     }
 }

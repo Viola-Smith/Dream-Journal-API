@@ -30,9 +30,16 @@ export default class DreamRepo {
         return await Dream.find().exec()
     }
 
-    public static async updateDream(id: number, newDream){
-        return await Dream.replaceOne({"id":id}, newDream)
+    public static async getDream(id){
+        return await Dream.findOne({"id":id}).exec()
     }
 
+    public static async updateDream(id: number, newDream){
+        return await Dream.findOneAndUpdate({"id":id}, newDream, { new: true }).exec()
+    }
+
+    public static async deleteDream(id:number){
+        return await Dream.findOneAndDelete({"id":id})
+    }
 
 }

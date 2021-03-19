@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const moment_1 = __importDefault(require("moment"));
 const dream_1 = require("../database/models/dream");
 const DreamRepo_1 = __importDefault(require("../database/repositories/DreamRepo"));
 class DreamService {
     static getAllDreamTypes() {
         var values = Object.keys(dream_1.DreamType).filter(d => isNaN(Number(d)));
-        //console.log(values)
         return values;
     }
     static getDreamTypeName(index) {
@@ -25,6 +25,11 @@ class DreamService {
     }
     static createDream(dreamInfo) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!moment_1.default(dreamInfo.date, "YYYY-MM-DD", true).isValid())
+                return { "error message": "The date is not in the right format" };
+            let arrDreamTypes = Array.from(Array(this.getAllDreamTypes().length).keys());
+            if (!arrDreamTypes.includes(dreamInfo.type))
+                return { "error message": "The type is not valid" };
             let res = yield DreamRepo_1.default.createDream(dreamInfo);
             return res.ops[0];
         });
@@ -34,9 +39,26 @@ class DreamService {
             return yield DreamRepo_1.default.getAllDreams();
         });
     }
+    static findDream(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (isNaN(id))
+                return { "error message": "id is not a number" };
+            return yield DreamRepo_1.default.getDream(id);
+        });
+    }
     static updateDream(id, newDream) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (isNaN(id))
+                return { "error message": "id is not a number" };
+            console.log(typeof newDream);
             return yield DreamRepo_1.default.updateDream(id, newDream);
+        });
+    }
+    static deleteDream(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (isNaN(id))
+                return { "error message": "id is not a number" };
+            return yield DreamRepo_1.default.deleteDream(id);
         });
     }
 }
