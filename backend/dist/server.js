@@ -15,7 +15,7 @@ const connection = mongoose_1.default.connection;
 connection.once('open', () => {
     console.log('mongo open');
 });
-var routes = require('./routes/UserRoutes');
+var routes = require('./routes/DreamRoutes');
 app.use('/', routes);
 app.listen(4000, () => console.log(`Express server running on port 4000`));
 //# sourceMappingURL=server.js.map
