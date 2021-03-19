@@ -8,7 +8,7 @@
 		npm install typescript
 		npm install moment
 		npm install pino
-
+		
 3. Running the app:
 		tsc (typescript compiler)
 		npm run serve

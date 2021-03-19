@@ -1,6 +1,5 @@
 import express from 'express';
 import DreamTypeService from '../services/DreamTypeService';
-import Helper from '../helpers/Helper';
 
 
 const router = express.Router();

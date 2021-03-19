@@ -1,6 +1,3 @@
-import { DreamType } from "../database/models/dream"
-
-
 
 export default class Helper{
     

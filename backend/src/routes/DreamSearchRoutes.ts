@@ -1,11 +1,7 @@
 import express from 'express';
-
+import DreamSearchService from '../services/DreamSearchService';
 
 const router = express.Router();
-
-import DreamService from '../services/DreamService'
-
-
 
 
 router.route('/').get(async (req, res)=>{
@@ -15,7 +11,7 @@ router.route('/').get(async (req, res)=>{
 	let dateTo = req.query.date2
 	let page = req.query.page
 	let pageSize = req.query.size
-	res.json( await DreamService.search(title, type, dateFrom,dateTo, page, pageSize))
+	res.json( await DreamSearchService.search(title, type, dateFrom,dateTo, page, pageSize))
   }
 );
 

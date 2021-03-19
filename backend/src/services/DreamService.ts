@@ -1,29 +1,31 @@
 
 import moment from 'moment';
-import Helper from '../helpers/Helper';
-import { DreamType, IDream } from '../database/models/dream';
+import { logger } from '../server';
 import DreamRepo from '../database/repositories/DreamRepo'
 import DreamTypeService from './DreamTypeService';
 
-const pino = require('pino');
-
-const logger = pino({
-    level:  'debug' 
-});
 
 
 export default class DreamService{
 
     public static async createDream(dreamInfo){
-        if(!moment(dreamInfo.date, "YYYY-MM-DD", true).isValid() ) {
+        if(dreamInfo.title==undefined || dreamInfo.title=="" ) {
+            logger.error(new Error("Create query failed"), "Title not defined")
+            return {"error message": "Title not defined"}
+        }
+
+        if(dreamInfo.date==undefined || dreamInfo.date=="") dreamInfo.date= moment().format("YYYY-MM-DD");
+        else if(!moment(dreamInfo.date, "YYYY-MM-DD", true).isValid() ) {
             logger.error(new Error("Create query failed"), "The date is not in right format")
             return {"error message": "The date is not in the right format"}
         }
-            
-        if(!DreamTypeService.isValidType(dreamInfo.type)) {
+        if(dreamInfo.type==undefined || dreamInfo.type=="") dreamInfo.type=0    
+        else if(!DreamTypeService.isValidType(dreamInfo.type)) {
             logger.error(new Error("Create query failed"), "The dream type is not valid")
             return {"error message": "The dream type is not valid"}
         } 
+        
+        if(dreamInfo.description==undefined) dreamInfo.description=""
         
         try{
             dreamInfo.type = DreamTypeService.getDreamTypeName(dreamInfo.type)
@@ -70,7 +72,7 @@ export default class DreamService{
         newDream.type = DreamTypeService.getDreamTypeName(newDream.type)
         try{
             let updatedDream =  await DreamRepo.updateDream(id, newDream)
-            logger.info('Updated a dream with id '+id)
+            if(updatedDream) logger.info('Updated a dream with id '+id)
             return updatedDream
         }catch(err){
             logger.error(new Error("Update a dream failed with id "+id), err)
@@ -86,7 +88,7 @@ export default class DreamService{
         } 
         try{
             let deletedDream =  await DreamRepo.deleteDream(id)
-            logger.info('Deleted a dream with id '+id)
+            if(deletedDream) logger.info('Deleted a dream with id '+id)
             return deletedDream
         }catch(err){
             logger.error(new Error("Delete a dream failed with id "+id), err)
@@ -95,27 +97,5 @@ export default class DreamService{
     }
 
 
-    public static async search(title, type, dateFrom, dateTo, page, pageSize){
-        type = DreamTypeService.getDreamTypeName(type)
-        try{
-            let arr =  await DreamRepo.searchDreams(title, type, dateFrom, dateTo)
-            let page_number = Number(page)
-            let page_size = Number(pageSize)
-
-            logger.info('Searched for dreams')
-            logger.debug('Searched with parameters: title = '+title+', type= '+type+', date1= '+dateFrom+', date2='+ dateTo
-                +' , page number = '+page_number+', page size = '+page_size)
-
-            //if(isNaN(page_number)  ||  isNaN(page_size) ) return arr
-            if(isNaN(page_number)) page_number =1
-            if(isNaN(page_size)) page_size=2
-
-            return Helper.paginate(arr,page_number,page_size)
-        }catch(err){
-            logger.error(new Error("Search dreams failed"), err)
-            return {"error message": err}
-        }
-        
-    }
 
 }

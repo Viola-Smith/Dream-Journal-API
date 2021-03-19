@@ -1,8 +1,5 @@
-
 import Helper from '../../helpers/Helper';
-import DreamService from '../../services/DreamService';
-import Dream, { DreamType } from '../models/dream';
-//import Promise from 'promise'
+import Dream from '../models/dream';
 
 export default class DreamRepo {
 
@@ -40,6 +37,7 @@ export default class DreamRepo {
 
     public static async searchDreams(title, type, dateFrom,dateTo){
         if(title=="" || title==undefined) title= { $exists: true }
+        else title= {'$regex': title, '$options' : 'i'}
         if(type=="" || type==undefined) type= { $exists: true }
 
         let dateComparison:any = Helper.transforDateRange(dateFrom, dateTo)

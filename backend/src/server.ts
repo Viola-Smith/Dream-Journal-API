@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 const pino = require('pino');
 
-const logger = pino({
+export const logger = pino({
     level:  'info' 
 });
 

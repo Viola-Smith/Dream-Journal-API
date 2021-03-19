@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
@@ -27,12 +27,6 @@ let Dream = new Schema({
     }
 }, {collection:"Dream"});
 
-export interface IDream extends Document {
-    id:number,
-    title:string,
-    description: string,
-    date: string,
-    type:DreamType
-}
 
-export default mongoose.model<IDream>('Dream', Dream);
+
+export default mongoose.model('Dream', Dream);
