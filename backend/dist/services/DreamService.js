@@ -50,7 +50,7 @@ class DreamService {
         return __awaiter(this, void 0, void 0, function* () {
             if (isNaN(id))
                 return { "error message": "id is not a number" };
-            console.log(typeof newDream);
+            newDream.type = this.getDreamTypeName(newDream.type);
             return yield DreamRepo_1.default.updateDream(id, newDream);
         });
     }
@@ -59,6 +59,16 @@ class DreamService {
             if (isNaN(id))
                 return { "error message": "id is not a number" };
             return yield DreamRepo_1.default.deleteDream(id);
+        });
+    }
+    static search(title, type, dateFrom, dateTo, page, pageSize) {
+        return __awaiter(this, void 0, void 0, function* () {
+            type = this.getDreamTypeName(type);
+            let arr = yield DreamRepo_1.default.searchDreams(title, type, dateFrom, dateTo, page);
+            console.log(arr);
+            let page_number = Number(page);
+            let page_size = Number(pageSize);
+            return arr.slice((page_number - 1) * page_size, page_number * page_size);
         });
     }
 }

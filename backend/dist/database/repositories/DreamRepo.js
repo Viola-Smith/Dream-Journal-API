@@ -57,6 +57,45 @@ class DreamRepo {
             return yield dream_1.default.findOneAndDelete({ "id": id });
         });
     }
+    static transforDateRange(dateFrom, dateTo) {
+        if (dateFrom == "" || dateFrom == undefined) {
+            if (dateTo == "" || dateTo == undefined)
+                return { $exists: true };
+            else
+                return { "$lt": new Date(dateTo) };
+        }
+        else {
+            if (dateTo == "" || dateTo == undefined)
+                return { "$gte": new Date(dateFrom) };
+            else
+                return { "$gte": new Date(dateFrom), "$lt": new Date(dateTo) };
+        }
+    }
+    static searchDreams(title, type, dateFrom, dateTo, page) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (title == "" || title == undefined)
+                title = { $exists: true };
+            if (type == "" || type == undefined)
+                type = { $exists: true };
+            let dateComparison = this.transforDateRange(dateFrom, dateTo);
+            if (page == undefined || page == "" || isNaN(Number(page)))
+                page = 1;
+            return yield dream_1.default.collection.aggregate([
+                { "$addFields": {
+                        "date2": {
+                            "$dateFromString": {
+                                "dateString": "$date"
+                            }
+                        }
+                    } },
+                { "$match": { $and: [
+                            { "date2": dateComparison },
+                            { "title": title },
+                            { "type": type }
+                        ] } }
+            ]).toArray();
+        });
+    }
 }
 exports.default = DreamRepo;
 //# sourceMappingURL=DreamRepo.js.map

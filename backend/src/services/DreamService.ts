@@ -33,14 +33,25 @@ export default class DreamService{
         return await DreamRepo.getDream(id)
     }
 
-    public static async updateDream(id:number, newDream: IDream){
+    public static async updateDream(id:number, newDream){
         if(isNaN(id)) return {"error message": "id is not a number"}
+        newDream.type = this.getDreamTypeName(newDream.type)
         return await DreamRepo.updateDream(id, newDream)
     }
 
     public static async deleteDream(id:number){
         if(isNaN(id)) return {"error message": "id is not a number"}
         return await DreamRepo.deleteDream(id)
+    }
+
+
+    public static async search(title, type, dateFrom, dateTo, page, pageSize){
+        type = this.getDreamTypeName(type)
+        let arr =  await DreamRepo.searchDreams(title, type, dateFrom, dateTo, page)
+        console.log(arr)
+        let page_number = Number(page)
+        let page_size = Number(pageSize)
+        return arr.slice((page_number - 1) * page_size, page_number * page_size)
     }
 
 }

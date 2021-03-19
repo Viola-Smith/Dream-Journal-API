@@ -21,10 +21,10 @@ connection.once('open', ()=>{
 
 var routeType = require('./routes/DreamTypeRoutes');
 var  dreamRoutes = require('./routes/DreamRoutes');
-
+var searchRoutes = require('./routes/DreamSearchRoutes');
 
 app.use('/', routeType);
 app.use('/dream', dreamRoutes);
-
+app.use('/search', searchRoutes)
 
 app.listen(4000, () => console.log(`Express server running on port 4000`));
