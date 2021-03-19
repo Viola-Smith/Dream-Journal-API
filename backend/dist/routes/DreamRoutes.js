@@ -15,15 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const DreamService_1 = __importDefault(require("../services/DreamService"));
-router.route('/login').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let username = req.body.username;
-    let password = req.body.password;
-    //let result = await UserService.login(username, password)
-    //res.json(result)
+router.route('/').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let dreamInfo = req.body.dream;
+    res.json(yield DreamService_1.default.createDream(dreamInfo));
 }));
-router.route('/types').get((req, res) => {
-    let result = DreamService_1.default.getAllDreamTypes();
-    res.json(result);
-});
 module.exports = router;
 //# sourceMappingURL=DreamRoutes.js.map

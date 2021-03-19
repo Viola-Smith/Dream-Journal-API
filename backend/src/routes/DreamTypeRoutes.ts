@@ -7,11 +7,10 @@ import DreamService from '../services/DreamService'
 
 
 
-router.route('/').post(async (req, res)=>{
-	let dreamInfo = req.body.dream
-	res.json( await DreamService.createDream(dreamInfo))
+router.route('/types').get((req, res)=>{
+	let result =  DreamService.getAllDreamTypes()
+	res.json(result)
   }
 );
-
 
 module.exports = router;

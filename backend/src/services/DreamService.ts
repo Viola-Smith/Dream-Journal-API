@@ -2,14 +2,21 @@
 import { DreamType } from '../database/models/dream';
 import DreamRepo from '../database/repositories/DreamRepo'
 
-export default class UserService{
-
-    
+export default class DreamService{
 
     public static getAllDreamTypes(){
         var values = Object.keys(DreamType).filter(d=>isNaN(Number(d)))
         //console.log(values)
         return values
+    }
+
+    public static getDreamTypeName(index:number){
+        return DreamService.getAllDreamTypes()[index]
+    }
+
+    public static async createDream(dreamInfo){
+        let res = await DreamRepo.createDream(dreamInfo)
+        return res.ops[0]    
     }
 
 }

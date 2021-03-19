@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-mongoose.connect('mongodb://localhost:27017/practice');
+mongoose.connect('mongodb://localhost:27017/dreams');
 
 const connection = mongoose.connection;
 
@@ -19,9 +19,12 @@ connection.once('open', ()=>{
 })
 
 
-var routes = require('./routes/DreamRoutes');
+var routeType = require('./routes/DreamTypeRoutes');
+var  dreamRoutes = require('./routes/DreamRoutes');
 
-app.use('/', routes);
+
+app.use('/', routeType);
+app.use('/dream', dreamRoutes);
 
 
 app.listen(4000, () => console.log(`Express server running on port 4000`));
