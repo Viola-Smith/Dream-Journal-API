@@ -29,6 +29,16 @@ class DreamService {
             return res.ops[0];
         });
     }
+    static getAllDreams() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield DreamRepo_1.default.getAllDreams();
+        });
+    }
+    static updateDream(id, newDream) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield DreamRepo_1.default.updateDream(id, newDream);
+        });
+    }
 }
 exports.default = DreamService;
 //# sourceMappingURL=DreamService.js.map

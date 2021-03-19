@@ -19,4 +19,12 @@ export default class DreamService{
         return res.ops[0]    
     }
 
+    public static async getAllDreams(){
+        return await DreamRepo.getAllDreams()
+    }
+
+    public static async updateDream(id:number, newDream){
+        return await DreamRepo.updateDream(id, newDream)
+    }
+
 }

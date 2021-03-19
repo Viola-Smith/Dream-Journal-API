@@ -26,6 +26,13 @@ export default class DreamRepo {
         return await Dream.collection.insertOne(newDream)
     }
 
+    public static async getAllDreams(){
+        return await Dream.find().exec()
+    }
+
+    public static async updateDream(id: number, newDream){
+        return await Dream.replaceOne({"id":id}, newDream)
+    }
 
 
 }

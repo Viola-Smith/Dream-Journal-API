@@ -19,5 +19,13 @@ router.route('/').post((req, res) => __awaiter(void 0, void 0, void 0, function*
     let dreamInfo = req.body.dream;
     res.json(yield DreamService_1.default.createDream(dreamInfo));
 }));
+router.route('/').get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.json(yield DreamService_1.default.getAllDreams());
+}));
+router.route('/:id').put((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let id = req.params.id;
+    let dream = req.body.dream;
+    res.json(yield DreamService_1.default.updateDream(Number(id), dream));
+}));
 module.exports = router;
 //# sourceMappingURL=DreamRoutes.js.map

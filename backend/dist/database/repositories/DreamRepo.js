@@ -37,6 +37,16 @@ class DreamRepo {
             return yield dream_1.default.collection.insertOne(newDream);
         });
     }
+    static getAllDreams() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield dream_1.default.find().exec();
+        });
+    }
+    static updateDream(id, newDream) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield dream_1.default.replaceOne({ "id": id }, newDream);
+        });
+    }
 }
 exports.default = DreamRepo;
 //# sourceMappingURL=DreamRepo.js.map

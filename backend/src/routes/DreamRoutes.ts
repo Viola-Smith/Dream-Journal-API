@@ -13,5 +13,17 @@ router.route('/').post(async (req, res)=>{
   }
 );
 
+router.route('/').get(async (req, res)=>{
+	res.json( await DreamService.getAllDreams())
+  }
+);
+
+router.route('/:id').put(async (req, res)=>{
+	let id = req.params.id
+	let dream = req.body.dream
+	res.json( await DreamService.updateDream(Number(id),dream))
+  }
+);
+
 
 module.exports = router;
