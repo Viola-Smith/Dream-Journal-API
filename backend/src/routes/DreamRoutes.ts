@@ -6,6 +6,10 @@ const router = express.Router();
 import DreamService from '../services/DreamService'
 
 
+const pino = require('pino');
+
+const logger = pino();
+
 
 router.route('/').post(async (req, res)=>{
 	let dreamInfo = req.body.dream

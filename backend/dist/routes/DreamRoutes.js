@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const DreamService_1 = __importDefault(require("../services/DreamService"));
+const pino = require('pino');
+const logger = pino();
 router.route('/').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let dreamInfo = req.body.dream;
     res.json(yield DreamService_1.default.createDream(dreamInfo));
